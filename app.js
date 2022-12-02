@@ -27,14 +27,14 @@ app.get('/',(req,res) => {
 
 // list of city
 app.get('/location',(req,res) => {
-    db.collection('location').find().toArray((err,result)=>{
+    db.collection('locations').find().toArray((err,result)=>{
         if(err) throw err;
         res.send(result)
     })
 })
 
 // list of restaurant
-app.get('/restaurants',(req,res) => {
+app.get('/restaurant',(req,res) => {
     let query = {};
     let stateId = Number(req.query.stateId);
     let mealId = Number(req.query.mealId);
@@ -43,7 +43,7 @@ app.get('/restaurants',(req,res) => {
     }else if(mealId){
         query={"mealTypes.mealtype_id":mealId}
     }
-    db.collection('restaurants').find(query).toArray((err,result) =>{
+    db.collection('Restaurantdata').find(query).toArray((err,result) =>{
         if(err) throw err;
         res.send(result)
     })
@@ -77,7 +77,7 @@ app.get('/filter/:mealId',(req,res) => {
             $and:[{cost:{$gt:lcost,$lt:hcost}}]
         } 
     }
-    db.collection('restaurants').find(query).sort(sort).toArray((err,result) =>{
+    db.collection('Restaurantdata').find(query).sort(sort).toArray((err,result) =>{
         if(err) throw err;
         res.send(result)
     })
@@ -85,7 +85,7 @@ app.get('/filter/:mealId',(req,res) => {
 
 // list of meals
 app.get('/meals',(req,res) => {
-    db.collection('mealType').find().toArray((err,result) =>{
+    db.collection('mealtypes').find().toArray((err,result) =>{
         if(err) throw err;
         res.send(result)
     })
@@ -95,7 +95,7 @@ app.get('/meals',(req,res) => {
 app.get('/details/:id',(req,res) => {
     //let id = mongo.ObjectId(req.params.id)
     let id = Number(req.params.id)
-    db.collection('restaurants').find({restaurant_id:id}).toArray((err,result) =>{
+    db.collection('Restaurantdata').find({restaurant_id:id}).toArray((err,result) =>{
         if(err) throw err;
         res.send(result)
     })
@@ -104,7 +104,7 @@ app.get('/details/:id',(req,res) => {
 //restaurant menu details
 app.get('/menu/:id',(req,res) => {
     let id = Number(req.params.id)
-    db.collection('menu').find({restaurant_id:id}).toArray((err,result) =>{
+    db.collection('RestaurantMenu').find({restaurant_id:id}).toArray((err,result) =>{
         if(err) throw err;
         res.send(result)
     })
@@ -121,7 +121,7 @@ app.post('/placeOrder',(req,res) => {
 // //menu details
 app.post('/menuItem',(req,res) => {
     if(Array.isArray(req.body.id)){
-        db.collection('menu').find({menu_id:{$in:req.body.id}}).toArray((err,result) =>{
+        db.collection('RestaurantMenu').find({menu_id:{$in:req.body.id}}).toArray((err,result) =>{
             if(err) throw err;
             res.send(result)
         })
