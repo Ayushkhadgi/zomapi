@@ -1,25 +1,25 @@
-let express = require('express');
+import express from 'express';
 let app = express();
 /// for reading value form .env 
-let dotenv = require('dotenv');
-dotenv.config()
+import { config } from 'dotenv';
+config()
 // for logging purposes
-let morgan = require('morgan');
-let fs = require('fs');
+import morgan from 'morgan';
+import { createWriteStream } from 'fs';
 let port = process.env.PORT || 9800;
-let cors = require('cors');
-let mongo = require('mongodb');
-let MongoClient = mongo.MongoClient;
+import cors from 'cors';
+import { MongoClient as _MongoClient } from 'mongodb';
+let MongoClient = _MongoClient;
 let mongoUrl = "mongodb+srv://ayush:ayush123@cluster0.fvalbpb.mongodb.net/?retryWrites=true&w=majority";
-let bodyParser = require('body-parser')
+import { urlencoded, json } from 'body-parser';
 let db;
 
 
 // middleware
-app.use(morgan('short',{stream:fs.createWriteStream('./app.logs')}))
+app.use(morgan('short',{stream:createWriteStream('./app.logs')}))
 app.use(cors());
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
+app.use(urlencoded({extended:true}))
+app.use(json())
 
 app.get('/',(req,res) => {
     res.send('This is From Express App code')
