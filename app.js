@@ -2,7 +2,7 @@ import express from 'express';
 let app = express();
 /// for reading value form .env 
 import { config } from 'dotenv';
-config()
+config();
 // for logging purposes
 import morgan from 'morgan';
 import { createWriteStream } from 'fs';
@@ -10,10 +10,9 @@ let port = process.env.PORT || 9800;
 import cors from 'cors';
 import { MongoClient as _MongoClient } from 'mongodb';
 let MongoClient = _MongoClient;
-let mongoUrl = "mongodb+srv://ayush:ayush123@cluster0.fvalbpb.mongodb.net/?retryWrites=true&w=majority";
+let mongoUrl = "mongodb+srv://ayush:ayush123@cluster0.fvalbpb.mongodb.net/data?retryWrites=true&w=majority";
 import { urlencoded, json } from 'body-parser';
 let db;
-
 
 // middleware
 app.use(morgan('short',{stream:createWriteStream('./app.logs')}))
@@ -24,6 +23,7 @@ app.use(json())
 app.get('/',(req,res) => {
     res.send('This is From Express App code')
 })
+
 
 // list of city
 app.get('/location',(req,res) => {
