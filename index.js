@@ -112,7 +112,7 @@ app.get('/menu/:id',(req,res) => {
 
 app.post('/placeOrder',(req,res) => {
     console.log(req.body);
-    db.collection('orders').insert(req.body,(err,result) => {
+    db.collection('orders').bulkWrite(req.body,(err,result) => {
         if(err) throw err;
         res.send('Order Placed')
     })
